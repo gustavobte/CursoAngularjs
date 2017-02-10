@@ -1,105 +1,102 @@
-angular.module('pdCurso')
-    .controller('IndexController', IndexController);
+(function () {
+    'use strict';
 
-IndexController.$inject = ['$scope', 'PdAlertService', '$filter'];
+    angular
+        .module('pdCurso')
+        .controller('IndexController', IndexController);
 
-function IndexController($scope, PdAlertService, $filter) {
-    $scope.entidade = {};
-    $scope.listaDePessoas = [];
+    /* @ngInject */
+    function IndexController($scope, PdAlertService, $filter) {
 
-    $scope.salvar = salvar;
-    $scope.limpar = limpar;
-    $scope.editar = editar;
-    $scope.excluir = excluir;
-    $scope.excluirPessoa = excluirPessoa;
-    $scope.getStyleDaLinha = getStyleDaLinha;
+        var vm = this;
 
-    $scope.gridOptions = {
-        data: 'listaDePessoas',
-        enableColumnMenus: false,
-        enableRowSelection:true,
-        rowTemplate:'app/templates/row-template.html',
-        columnDefs: [
-            {name: 'Nome', field: 'nome'},
-            {name: 'Sobrenome', field: 'sobrenome', width: 150},
-            {name: 'Sexo', field: 'sexo', width: 150},
-            {
-                name: 'Data de nascimento',
-                field: 'nascimento',
-                width: 190,
-                cellTemplate: 'app/templates/cell-template-date.html'
-            },
-            {
-                name: '', field: 'excluir', width: 40,
-                cellTemplate: 'app/templates/cell-template-excluir.html',
-                onClick:excluir
-            }
-        ]
-    };
+        vm.pessoa = {};
+        vm.listaPessoas = [];
 
-    function getStyleDaLinha(linhaSelecionada) {
-        var style = {};
+        vm.myDate = new Date();
 
-        if(linhaSelecionada.cor){
-            style.backgroundColor = linhaSelecionada.cor;
-        }
-
-        return style;
-    }
-
-    function salvar() {
-        if ($scope.formPessoa.$invalid) {
-
-            angular.forEach($scope.formPessoa.$error, function (errorField) {
-                for (var i = 0; i < errorField.length; i++) {
-                    errorField[i].$setTouched();
+        vm.gridOptions = {
+            data: 'listaPessoas',
+            enableColumnMenus: false,
+            enableRowSelection: true,
+            rowTemplate: 'templates/row-template.html',
+            columnDefs: [
+                {name: 'Nome', field: 'nome'},
+                {name: 'Sobrenome', field: 'sobrenome', width: 250},
+                {name: 'Sexo', field: 'sexo', width: 250},
+                {
+                    name: 'Data de Nascimento',
+                    field: 'dataNascimento',
+                    width: 250,
+                    cellTemplate: 'templates/cell-template-date.html'
+                },
+                {
+                    name: 'Ações',
+                    width: 100,
+                    cellTemplate: 'templates/cell-template-actions.html',
+                    onClick: excluir
                 }
-            });
+            ]
+        };
 
+        vm.onClickBotao = onClickBotao;
+        vm.outraFunction = outraFunction;
 
-            PdAlertService.showError('Verifique os campos inválidos');
-            return;
+        vm.salvar = salvar;
+        vm.limpar = limpar;
+        vm.excluir = excluir;
+        vm.editar = editar;
+        vm.getStyleDaLinha = getStyleDaLinha;
+
+        function onClickBotao() {
+            console.log('Opa, funcao 1');
         }
 
-        var dataFormatada = $filter('date')($scope.entidade.nascimento, 'dd/MM/yyyy');
+        function outraFunction() {
+            console.log('Opa, funcao 2');
+        }
 
-        PdAlertService.showSuccess(dataFormatada);
+        function salvar() {
+            if (vm.formPessoa.$invalid) {
+                angular.forEach(vm.formPessoa.$error, function (errorFields) {
+                    for (var i = 0; i < errorFields.length; i++) {
+                        errorFields[i].$setTouched();
+                    }
+                });
+                PdAlertService.showError('Verifica os campos.', 'Erro !');
+                return;
+            }
 
-        var entidadeAux = $scope.entidade;
+            var dataNascimentoFormatada = $filter('date')(vm.pessoa.dataNascimento, 'dd/MM/yyyy');
 
-        excluirPessoa($scope.entidade);
+            vm.listaPessoas.push(vm.pessoa);
+            limpar();
+            PdAlertService.showSuccess(dataNascimentoFormatada);
+        }
 
-        $scope.listaDePessoas.push(entidadeAux);
-        limpar();
+        function limpar() {
+            $scope.pessoa = {};
+            angular.element('#nome').focus();
+            $scope.formPessoa.$setUntouched();
+        }
 
-        PdAlertService.showSuccess('Registro salvo com sucesso!');
-    }
+        function excluir(index) {
+            $scope.listaPessoas.splice(index, 1);
+            PdAlertService.showSuccess('O registro foi excluido.', 'Sucesso !');
+        }
 
-    function limpar() {
-        $scope.entidade = {};
+        function editar(pessoa) {
+            $scope.pessoa = pessoa;
+        }
 
-        angular.element('#itNome').focus();
+        function getStyleDaLinha(linhaSelecionada) {
+            var style = {};
+            if (linhaSelecionada.cor) {
+                style.backgroundColor = linhaSelecionada.cor;
+            }
 
-        $scope.formPessoa.$setUntouched();
-    }
-
-    function editar(pessoa) {
-        $scope.entidade = pessoa;
-    }
-
-    function excluir(index) {
-        $scope.listaDePessoas.splice(index, 1);
-
-        PdAlertService.showSuccess('Registro excluido com sucesso!', 'Ok');
-
-        limpar();
-    }
-
-    function excluirPessoa(pessoa) {
-        var index = $scope.listaDePessoas.indexOf(pessoa);
-
-        if (index >= 0) {
-            excluir(index);
+            return style;
         }
     }
-}
+
+})();

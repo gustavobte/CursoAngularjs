@@ -1,27 +1,24 @@
-angular
-    .module('pdCurso',[
-    'ngMessages',
-    'ngAnimate',
-    'toastr',
-    'ui.grid',
-    'ui.grid.selection',
-    'ngMaterial',
-    'ui.router',
-    'oc.lazyLoad'
-]);
+(function () {
+    'use strict';
 
-angular.module('pdCurso')
-    .config(config);
+    angular
+        .module('pdCurso', [
+            'ngMessages',
+            'ngAnimate',
+            'toastr',
+            'ui.grid',
+            'ui.grid.selection',
+            'ngMaterial',
+            'ui.router',
+            'oc.lazyLoad',
+            'angular-loading-bar'
+        ]).config(compileProvider);
 
-function config($mdThemingProvider, $compileProvider) {
-    $mdThemingProvider.theme('blue')
-        .primaryPalette('blue')
-        .accentPalette('pink');
+    /*@ngInject*/
+    function compileProvider($compileProvider) {
 
-    $mdThemingProvider.theme('green')
-        .primaryPalette('green')
-        .accentPalette('pink');
+        // Correção de incompatibilidade angularjs 1.6
+        $compileProvider.preAssignBindingsEnabled(true);
+    }
 
-    //correção  angularjs 1.6
-    $compileProvider.preAssignBindingsEnabled(true);
-}
+})();

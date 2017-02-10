@@ -1,19 +1,34 @@
-angular.module('pdCurso')
-    .controller('Index6Controller',Index6Controller);
+(function () {
+    'use strict';
 
-function Index6Controller($scope, $rootScope) {
-    $scope.dipararEvento = dipararEvento;
+    angular
+        .module('pdCurso')
+        .controller('Index6Controller', IndexController);
 
-    $scope.$on('onTesteEvent', onTesteEvent);
+    /*@ngInject*/
+    function IndexController($scope, $rootScope) {
 
-    function onTesteEvent(event, data) {
-        //event.preventDefault();
+        var vm = this;
 
-        console.log(data);
+        vm.dispararEvento = dispararEvento;
+
+        // Escuta evento onTesteEvent que cheguem em rootScope
+        $rootScope.$on('onTesteEvent', onTesteEvent);
+
+        // Escuta evento onTesteEvent que cheguem em $scope
+        // $scope.$on('onTesteEvent', onTesteEvent);
+        function onTesteEvent(event, data) {
+            // Para de ouvir este evento
+            // $scope.preventDefault();
+            console.log(event + '\n' + data);
+        }
+
+        function dispararEvento() {
+            // Emit dispara um evento para os escopos superiores
+            // Broadcast dispara um evento para os escopos inferiores
+            $scope.$emit('onTesteEvent', 'teste');
+        }
+
     }
 
-    function dipararEvento() {
-        $scope.$emit('onTesteEvent', 'teste');
-    }
-
-}
+})();

@@ -5,125 +5,109 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Curso</title>
+    <title>Title</title>
 
-    <!-- -->
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap-theme.css">
-    <!-- -->
 
-    <!-- imports externos -->
+    <!-- Imports internos -->
     <script src="node_modules/angular/angular.js"></script>
 
-    <!-- fim imports externos -->
-
+    <!-- Imports externos -->
     <script src="app/config/pd-app.module.js"></script>
     <script src="app/controller/index.controller.js"></script>
+
 </head>
 <body ng-app="pdCurso" class="container">
 
-
 <div ng-controller="IndexController">
 
-    <!--
     <div class="row">
-
-        <div class="col-md-3" style="background-color: red;">
-            <button>teste</button>
+        <div class="col-md-3" style="background-color: aliceblue">
+            <hr/>
         </div>
 
-        <div class="col-md-3" style="background-color: aqua">
-            <button>teste</button>
+        <div class="col-md-3" style="background-color: cadetblue">
+            <hr/>
         </div>
 
-        <div class="col-md-3" style="background-color: blue">
-            <button>teste</button>
+        <div class="col-md-3" style="background-color: springgreen">
+            <hr/>
         </div>
 
-        <div class="col-md-3" style="background-color: seagreen">
-            <button>teste</button>
+        <div class="col-md-3" style="background-color: brown">
+            <hr/>
         </div>
+    </div>
 
-    </div>-->
+    <br/>
 
     <div class="panel panel-primary">
         <div class="panel-heading">
             Cadastro de pessoa
         </div>
-
         <div class="panel-body">
             <div class="row">
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label>Nome</label>
-                        <input type="text"
-                               class="form-control"
-                               ng-model="entidade.nome"
-                        >
+                        <label for="nome">Nome</label>
+                        <input id="nome" type="text" class="form-control" ng-model="pessoa.nome">
                     </div>
                 </div>
-
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label>Sobrenome</label>
-                        <input type="text"
-                               class="form-control"
-                               ng-model="entidade.sobrenome"
-                        >
+                        <label for="sobrenome">Sobrenome</label>
+                        <input id="sobrenome" type="text" class="form-control" ng-model="pessoa.sobrenome">
                     </div>
                 </div>
-
                 <div class="col-md-3">
                     <div class="form-group">
-                        <label>Sexo</label>
-                        <select class="form-control"
-                                ng-model="entidade.sexo">
+                        <label for="sexo">Sexo</label>
+                        <select id="sexo"
+                                class="form-control"
+                                ng-model="pessoa.sexo">
                             <option value="M">Masculino</option>
                             <option value="F">Feminino</option>
                         </select>
                     </div>
                 </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label for="endereco">Endereço</label>
+                        <input id="endereco" type="text" class="form-control" ng-model="pessoa.endereco">
+                    </div>
+                </div>
             </div>
         </div>
         <div class="panel-footer">
-            <button class="btn btn-primary"
-                    ng-click="salvar()">Salvar
-            </button>
-            <button class="btn btn-warning"
-                    ng-click="limpar()">Limpar
-            </button>
-            <button class="btn btn-danger">Excluir</button>
+            <button class="btn btn-primary" ng-click="salvar()">Salvar</button>
+            <button class="btn btn-warning" ng-click="limpar()">Limpar</button>
+            <button class="btn btn-danger" ng-click="excluir()">Excluir</button>
         </div>
     </div>
-    <table class="table">
+
+    <table class="table" ng-show="listaPessoas.length">
         <tr>
             <th>Nome</th>
             <th>Sobrenome</th>
             <th>Sexo</th>
             <th>Ações</th>
         </tr>
-        <tr ng-repeat="pessoa in listaDePessoas">
+        <tr ng-repeat="pessoa in listaPessoas">
             <td ng-bind="::pessoa.nome"></td>
             <td ng-bind="::pessoa.sobrenome"></td>
             <td ng-bind="::pessoa.sexo"></td>
             <td>
-                <button class="btn btn-primary"
-                        ng-click="editar(pessoa)">
+                <button class="btn btn-primary" ng-click="editar(pessoa)">
                     Editar
                 </button>
-                <button class="btn btn-danger"
-                        ng-click="excluir($index)">
-                    Excluir
-                </button>
-
-                <button class="btn btn-danger"
-                        ng-click="excluirPessoa(pessoa)">
+                <button class="btn btn-danger" ng-click="excluir($index)">
                     Excluir
                 </button>
             </td>
         </tr>
     </table>
-
 </div>
 
 </body>

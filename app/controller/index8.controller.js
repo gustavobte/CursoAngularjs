@@ -1,11 +1,23 @@
-angular.module('pdCurso')
-    .controller('Index8Controller',Index8Controller);
+(function () {
+    'use strict';
 
-function Index8Controller($scope, $state) {
+    angular
+        .module('pdCurso')
+        .controller('Index8Controller', IndexController);
 
-    $scope.alterarRota = alterarRota;
+    /*@ngInject*/
+    function IndexController($state, $rootScope) {
 
-    function alterarRota(state) {
-        $state.go(state);
+        var vm = this;
+
+        $rootScope.listaProdutos = [];
+
+        vm.alterarRota = alterarRota;
+
+        function alterarRota(state) {
+            $state.go(state);
+        }
+
     }
-}
+
+})();
